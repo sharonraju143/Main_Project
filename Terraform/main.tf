@@ -4,6 +4,13 @@ provider "google" {
   
 }
 
+terraform {
+  backend "gcs" {
+    bucket = "main_project_state_143"
+    prefix = "terraform/state"
+  }
+}
+
 resource "google_compute_network" "default" {
   name = "k8s-network"
 }
