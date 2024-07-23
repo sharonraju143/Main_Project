@@ -1,0 +1,26 @@
+- hosts: master
+  become: yes
+  gather_facts: false
+  tasks:
+    - name: Get join command
+      shell: kubeadm token create --print-join-command
+      register: join_command_raw
+ 
+    - name: Register dummy host with join command variable
+      add_host:
+        name: "DUMMY_HOST"
+        JOIN_COMMAND: "{{ join_command_raw.stdout }}"
+      vars:
+        ansible_connection: local
+ 
+- hosts:
+    - nodes
+  become: yes
+  tasks:
+    - name: Join cluster
+      shell: "{{ hostvars['DUMMY_HOST']['JOIN_COMMAND'] }} >> node_joined.txt"
+      ignore_errors: yes
+      args:
+        chdir: $HOME
+      register: join_output
+      changed_when: join_output.stdout != ""
