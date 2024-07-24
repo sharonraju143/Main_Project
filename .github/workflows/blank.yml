@@ -14,10 +14,10 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Write public key to file
-        run: echo "${{ secrets.PUBLIC_KEY }}" > Terraform/public_key.pub
+        run: echo "${{ secrets.PUBLIC_KEY }}" > public_key.pub
 
       - name: Write private key to file
-        run: echo "${{ secrets.PRIVATE_KEY }}" > Terraform/private_key.pem
+        run: echo "${{ secrets.PRIVATE_KEY }}" > private_key.pem
 
       - name: Set private key file permissions
         run: chmod 600 Terraform/private_key.pem
@@ -50,4 +50,6 @@ jobs:
         env:
           GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
         working-directory: Terraform
-      
+
+      - name: List files in Terraform directory after destroy
+        run: ls -la Terraform
