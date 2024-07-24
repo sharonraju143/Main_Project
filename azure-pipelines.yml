@@ -20,6 +20,7 @@ jobs:
 
   - script: |
       echo "Initializing Terraform..."
+      cd Terraform
       terraform init -reconfigure -backend-config="bucket=main_project_state_143" \
                      -backend-config="prefix=terraform/state" \
                      -backend-config="credentials=$(GOOGLE_CREDENTIALS_JSON)"
