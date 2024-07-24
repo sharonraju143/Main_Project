@@ -15,8 +15,3 @@ variable "zone" {
   type        = string
   default     = "us-east1-b"
 }
-variable "billing_ac_id" {
-  description = "The billing account ID"
-  type        = string
-  default     = "014522-8945E4-43E38B"
-}
