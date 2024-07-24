@@ -1,7 +1,7 @@
 provider "google" {
   project     = var.project_id
   region      = var.region
-  
+  billing_account = var.billing_ac_id
   
 }
 
