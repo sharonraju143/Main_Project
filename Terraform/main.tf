@@ -40,10 +40,7 @@ resource "google_compute_instance" "k8s-master" {
     }
   }
 
-  metadata = {
-    ssh-keys = "vengalasanjay000:${file("~/gcp_ssh.pub")}"
-  }
-}
+  
 
 resource "google_compute_instance" "k8s-node-1" {
   name         = "k8s-node-1"
@@ -63,10 +60,7 @@ resource "google_compute_instance" "k8s-node-1" {
     }
   }
 
-  metadata = {
-    ssh-keys = "vengalasanjay000:${file("~/gcp_ssh.pub")}"
-  }
-}
+  
 
 resource "google_compute_instance" "k8s-node-2" {
   name         = "k8s-node-2"
@@ -86,10 +80,6 @@ resource "google_compute_instance" "k8s-node-2" {
     }
   }
 
-  metadata = {
-    ssh-keys = "vengalasanjay000:${file("~/gcp_ssh.pub")}"
-  }
-}
 
 resource "google_compute_firewall" "allow-all" {
   name    = "allow-all"
