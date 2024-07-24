@@ -1,8 +1,9 @@
 provider "google" {
-  project     = var.project_id
-  region      = var.region
-  
-  
+  project = var.project_id
+  region  = var.region
+
+  # Specify the provider version (optional but recommended)
+  version = "~> 3.5"  # Adjust based on the version you're using
 }
 
 terraform {
@@ -36,11 +37,9 @@ resource "google_compute_instance" "k8s-master" {
   network_interface {
     network    = google_compute_network.default.id
     subnetwork = google_compute_subnetwork.default.id
-    access_config {
-    }
+    access_config {}
   }
-
-  
+}
 
 resource "google_compute_instance" "k8s-node-1" {
   name         = "k8s-node-1"
@@ -56,11 +55,9 @@ resource "google_compute_instance" "k8s-node-1" {
   network_interface {
     network    = google_compute_network.default.id
     subnetwork = google_compute_subnetwork.default.id
-    access_config {
-    }
+    access_config {}
   }
-
-  
+}
 
 resource "google_compute_instance" "k8s-node-2" {
   name         = "k8s-node-2"
@@ -76,10 +73,9 @@ resource "google_compute_instance" "k8s-node-2" {
   network_interface {
     network    = google_compute_network.default.id
     subnetwork = google_compute_subnetwork.default.id
-    access_config {
-    }
+    access_config {}
   }
-
+}
 
 resource "google_compute_firewall" "allow-all" {
   name    = "allow-all"
