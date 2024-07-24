@@ -27,6 +27,7 @@ jobs:
       terraformVersion: '1.9.2'
 
   - script: |
+      cd Terraform
       terraform init -backend-config="bucket=main_project_state_143" \
                      -backend-config="prefix=terraform/state" \
                      -backend-config="credentials=$(Build.SourcesDirectory)/credentials.json"
