@@ -20,7 +20,7 @@ jobs:
         run: echo "${{ secrets.PRIVATE_KEY }}" > private_key.pem
 
       - name: Set private key file permissions
-        run: chmod 600 Terraform/private_key.pem
+        run: chmod 600 private_key.pem
 
       - name: Install Terraform
         uses: hashicorp/setup-terraform@v2
@@ -44,6 +44,9 @@ jobs:
         env:
           GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
         working-directory: Terraform
+
+      - name: List files in Terraform directory after destroy
+        run: ls -la Terraform
         
       - name: Terraform Destroy
         run: terraform destroy --auto-approve -var project_id=${{ secrets.PROJECT_ID }}
@@ -51,5 +54,4 @@ jobs:
           GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
         working-directory: Terraform
 
-      - name: List files in Terraform directory after destroy
-        run: ls -la Terraform
+      
