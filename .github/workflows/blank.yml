@@ -44,6 +44,13 @@ jobs:
         env:
           GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
         working-directory: Terraform
+        
+      - name: Wait for Terraform to complete
+        run: sleep 30  # Adjust this if necessary; ensure enough time for custom.ini generation
+
+
+      - name: Copy custom.ini to Ansible folder
+        run: cp Terraform/custom.ini Ansible/custom.ini
 
       # Optionally, you can include a separate job or workflow for destroy if needed
       # - name: Terraform Destroy
