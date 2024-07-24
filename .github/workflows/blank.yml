@@ -45,22 +45,18 @@ jobs:
           GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
         working-directory: Terraform
         
-      - name: Terraform Destroy
-        run: terraform destroy --auto-approve -var project_id=${{ secrets.PROJECT_ID }}
-        env:
-          GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
-        working-directory: Terraform
-
       - name: List files in Terraform directory after destroy
         run: ls -la Terraform
-
-      - name: Change to Ansible directory
-        run: cd Ansible
 
       - name: Run Ansible Playbooks
         run: |
           ansible-playbook -i ../Terraform/custom.ini dependencies.yml
           ansible-playbook -i ../Terraform/custom.ini master.yml
           ansible-playbook -i ../Terraform/custom.ini nodes.yml
+        working-directory: Ansible
+
+       - name: Terraform Destroy
+        run: terraform destroy --auto-approve -var project_id=${{ secrets.PROJECT_ID }}
         env:
-          ANSIBLE_PRIVATE_KEY_FILE: ../Terraform/private_key.pem
+          GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
+        working-directory: Terraform
