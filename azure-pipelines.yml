@@ -1,0 +1,24 @@
+# GCP TFE Pipeline
+
+# Which branch to trigger from
+trigger:
+- main
+
+# Which OS image for the build agent to run 
+pool:
+  vmImage: 'ubuntu-latest'
+
+# Steps for your build process. This is pretty straightforward, there is nothing to 'build' for terraform,
+# rather just gather your Terraform for the artifact
+steps:
+- task: CopyFiles@2
+  displayName: 'Copy Terraform files to artifacts'
+  inputs:
+    SourceFolder: 'Terraform'
+    TargetFolder: '$(build.artifactstagingdirectory)/Terraform'
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact'
+  inputs:
+    PathtoPublish: '$(build.artifactstagingdirectory)'
+    ArtifactName: 'Terraform'
+    publishLocation: 'Container'
