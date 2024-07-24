@@ -37,9 +37,18 @@ steps:
     publishLocation: 'Container'
 
 - task: Bash@3
-  displayName: 'List Files and Print Working Directory'
+  displayName: 'Set Environment Variables for Terraform'
   inputs:
     targetType: 'inline'
     script: |
-      ls -laRt
-      pwd
+      export GOOGLE_APPLICATION_CREDENTIALS=$(Build.ArtifactStagingDirectory)/deft-smile-424908-e6-99b257295217.json
+      echo "GOOGLE_APPLICATION_CREDENTIALS set to $(Build.ArtifactStagingDirectory)/deft-smile-424908-e6-99b257295217.json"
+
+- task: Bash@3
+  displayName: 'Run Terraform Commands'
+  inputs:
+    targetType: 'inline'
+    script: |
+      terraform init
+      terraform plan
+      terraform apply -auto-approve
