@@ -9,6 +9,9 @@ steps:
     inputs:
       terraformVersion: 'latest'
       
+  - script: cd Terraform
+    displayName: 'Change directory to Terraform'
+      
   - task: TerraformCLI@0
     displayName: 'Initializing Terraform'
     env:
