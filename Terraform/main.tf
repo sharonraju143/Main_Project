@@ -36,6 +36,10 @@ resource "google_compute_instance" "k8s-master" {
     subnetwork = google_compute_subnetwork.default.id
     access_config {}
   }
+
+  metadata {
+    ssh-keys = "ubuntu:${file("public_key.pub")}"
+  }
 }
 
 resource "google_compute_instance" "k8s-node-1" {
@@ -54,6 +58,10 @@ resource "google_compute_instance" "k8s-node-1" {
     subnetwork = google_compute_subnetwork.default.id
     access_config {}
   }
+
+  metadata {
+    ssh-keys = "ubuntu:${file("public_key.pub")}"
+  }
 }
 
 resource "google_compute_instance" "k8s-node-2" {
@@ -71,6 +79,10 @@ resource "google_compute_instance" "k8s-node-2" {
     network    = google_compute_network.default.id
     subnetwork = google_compute_subnetwork.default.id
     access_config {}
+  }
+
+  metadata {
+    ssh-keys = "ubuntu:${file("public_key.pub")}"
   }
 }
 
