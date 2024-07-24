@@ -19,7 +19,7 @@ jobs:
 
   - script: |
       echo 'Writing service account credentials to file...'
-      echo $(GOOGLE_CREDENTIALS_JSON) > $(Build.SourcesDirectory)/gcp_credentials.json
+      echo $(GOOGLE_CREDENTIALS_JSON) > $(Build.SourcesDirectory)/credentials.json
     displayName: 'Write GCP credentials to file'
 
   - task: TerraformInstaller@0
