@@ -18,13 +18,12 @@ jobs:
     inputs:
       terraformVersion: '1.9.2'
 
-  - script: |
-      echo "Initializing Terraform..."
-      cd Terraform
-      terraform init -reconfigure -backend-config="bucket=main_project_state_143" \
-                     -backend-config="prefix=terraform/state" \
-                     -backend-config="credentials=$(GOOGLE_CREDENTIALS_JSON)"
-      terraform apply -auto-approve
-    env:
-      GOOGLE_CREDENTIALS_JSON: $(Build.SourcesDirectory)/gcp_credentials.json
-    displayName: 'Run Terraform'
+  - task: Bash@3
+    inputs:
+      targetType: 'inline'
+      script: |
+        cd Terraform
+        terraform init -reconfigure -input=false \
+          -backend-config="bucket=main_project_state_143" \
+          -backend-config="prefix=terraform/state" \
+          -backend-config="credentials=$(GOOGLE_CREDENTIALS_JSON)"
