@@ -13,6 +13,14 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      - name: Write public key to file
+        run: echo "${{ secrets.PUBLIC_KEY }}" > Terraform/public_key.pub
+
+      - name: Write private key to file
+        run: echo "${{ secrets.PRIVATE_KEY }}" > Terraform/private_key.pem
+        # Ensure the private key file has the correct permissions
+        run: chmod 600 Terraform/private_key.pem
+
       - name: Install Terraform
         uses: hashicorp/setup-terraform@v2
         with:
@@ -27,11 +35,21 @@ jobs:
           GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
         working-directory: Terraform
 
-      - name: Terraform Plan and Apply
-        run: |
-          terraform plan -var project_id=${{ secrets.PROJECT_ID }}
-          terraform apply --auto-approve -var project_id=${{ secrets.PROJECT_ID }} 
-          terraform destroy --auto-approve -var project_id=${{ secrets.PROJECT_ID }} 
+      - name: Terraform Plan
+        run: terraform plan -var project_id=${{ secrets.PROJECT_ID }}
         env:
           GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
         working-directory: Terraform
+
+      - name: Terraform Apply
+        run: terraform apply --auto-approve -var project_id=${{ secrets.PROJECT_ID }}
+        env:
+          GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
+        working-directory: Terraform
+
+      # Optionally, you can include a separate job or workflow for destroy if needed
+      # - name: Terraform Destroy
+      #   run: terraform destroy --auto-approve -var project_id=${{ secrets.PROJECT_ID }}
+      #   env:
+      #     GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
+      #   working-directory: Terraform
