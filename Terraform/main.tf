@@ -37,7 +37,7 @@ resource "google_compute_instance" "k8s-master" {
     access_config {}
   }
 
-  metadata {
+  metadata = {
     ssh-keys = "ubuntu:${file("public_key.pub")}"
   }
 }
@@ -59,7 +59,7 @@ resource "google_compute_instance" "k8s-node-1" {
     access_config {}
   }
 
-  metadata {
+  metadata = {
     ssh-keys = "ubuntu:${file("public_key.pub")}"
   }
 }
@@ -81,7 +81,7 @@ resource "google_compute_instance" "k8s-node-2" {
     access_config {}
   }
 
-  metadata {
+  metadata = {
     ssh-keys = "ubuntu:${file("public_key.pub")}"
   }
 }
