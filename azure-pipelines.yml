@@ -4,9 +4,6 @@ trigger:
 pool:
   vmImage: 'ubuntu-latest'
 
-variables:
-  GOOGLE_CREDENTIALS_JSON: $(GOOGLE_CREDENTIALS_JSON)
-
 jobs:
 - job: Terraform
   steps:
@@ -17,24 +14,16 @@ jobs:
       versionSpec: '3.x'
       addToPath: true
 
-  - script: |
-      echo "GOOGLE_CREDENTIALS_JSON: $(GOOGLE_CREDENTIALS_JSON)"
-      echo 'Writing service account credentials to file...'
-      echo "$(GOOGLE_CREDENTIALS_JSON)" > $(Build.SourcesDirectory)/gcp_credentials.json
-      cat $(Build.SourcesDirectory)/gcp_credentials.json
-      chmod 600 $(Build.SourcesDirectory)/gcp_credentials.json
-    displayName: 'Debug: Write GCP credentials to file'
-
   - task: TerraformInstaller@0
     inputs:
       terraformVersion: '1.9.2'
 
   - script: |
-      cd Terraform
-      terraform init -backend-config="bucket=main_project_state_143" \
+      echo "Initializing Terraform..."
+      terraform init -reconfigure -backend-config="bucket=main_project_state_143" \
                      -backend-config="prefix=terraform/state" \
-                     -backend-config="credentials=$(Build.SourcesDirectory)/gcp_credentials.json"
+                     -backend-config="credentials=$(GOOGLE_CREDENTIALS_JSON)"
       terraform apply -auto-approve
     env:
-      GOOGLE_APPLICATION_CREDENTIALS: $(Build.SourcesDirectory)/gcp_credentials.json
+      GOOGLE_CREDENTIALS_JSON: $(Build.SourcesDirectory)/gcp_credentials.json
     displayName: 'Run Terraform'
