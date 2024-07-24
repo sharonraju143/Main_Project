@@ -31,8 +31,8 @@ jobs:
       - name: Terraform Plan and Apply
         run: |
           terraform plan -var project_id=${{ secrets.PROJECT_ID }}
-          terraform apply --auto-approve -var project_id=${{ secrets.PROJECT_ID }}
-          terraform destroy --auto-approve -var project_id=${{ secrets.PROJECT_ID }}
+          terraform apply --auto-approve -var project_id=${{ secrets.PROJECT_ID }} -lock=false
+          terraform destroy --auto-approve -var project_id=${{ secrets.PROJECT_ID }} -lock=false
         env:
           GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
           BILLING_AC_ID: ${{ secrets.BILLING_AC_ID }}
