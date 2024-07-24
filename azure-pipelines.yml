@@ -22,6 +22,7 @@ steps:
       
   - script: |
       terraform plan -var project_id=$(project_id)
+      terraform apply --auto-approve -var project_id=$(project_id)
     displayName: 'Terraform Plan'
     env:
       GOOGLE_CREDENTIALS: $(google_credentials)
