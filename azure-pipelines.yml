@@ -19,6 +19,7 @@ steps:
       BILLING_AC_ID: $(billing_ac_id)
     inputs:
       command: 'init'
+      workingDirectory: 'Terraform'
       
   - task: PowerShell@2
     displayName: 'Terraform Plan'
@@ -29,3 +30,4 @@ steps:
       targetType: 'inline'
       script: |
          terraform plan -var project_id=$env:project_id -var billing_ac_id=$env:billing_ac_id
+      workingDirectory: 'Terraform'
