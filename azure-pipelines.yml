@@ -18,7 +18,7 @@ steps:
       GOOGLE_CREDENTIALS: $(google_credentials)
       BILLING_AC_ID: $(billing_ac_id)
     inputs:
-      command: 'init'
+      command: 'init -reconfigure'
       workingDirectory: 'Terraform'
       
   - task: PowerShell@2
