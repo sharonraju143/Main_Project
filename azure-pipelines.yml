@@ -12,22 +12,18 @@ steps:
   - script: cd Terraform
     displayName: 'Change directory to Terraform'
       
-  - task: TerraformCLI@0
+  - script: |
+      terraform init -reconfigure
     displayName: 'Initializing Terraform'
     env:
       GOOGLE_CREDENTIALS: $(google_credentials)
       BILLING_AC_ID: $(billing_ac_id)
-    inputs:
-      command: 'init -reconfigure'
-      workingDirectory: 'Terraform'
+    workingDirectory: 'Terraform'
       
-  - task: PowerShell@2
+  - script: |
+      terraform plan -var project_id=$(project_id) -var billing_ac_id=$(billing_ac_id)
     displayName: 'Terraform Plan'
     env:
       GOOGLE_CREDENTIALS: $(google_credentials)
       BILLING_AC_ID: $(billing_ac_id)
-    inputs:
-      targetType: 'inline'
-      script: |
-         terraform plan -var project_id=$env:project_id -var billing_ac_id=$env:billing_ac_id
-      workingDirectory: 'Terraform'
+    workingDirectory: 'Terraform'
