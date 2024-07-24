@@ -31,7 +31,7 @@ jobs:
 
   - script: |
       cd Terraform
-      terraform init -reconfigure -backend-config="bucket=main_project_state_143" \
+      terraform init -backend-config="bucket=main_project_state_143" \
                      -backend-config="prefix=terraform/state" \
                      -backend-config="credentials=$(Build.SourcesDirectory)/gcp_credentials.json"
       terraform apply -auto-approve
