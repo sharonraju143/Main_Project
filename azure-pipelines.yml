@@ -21,7 +21,7 @@ steps:
     workingDirectory: 'Terraform'
       
   - script: |
-      terraform plan -var project_id=$(project_id) -var billing_ac_id=$(billing_ac_id)
+      terraform plan -var project_id=$(project_id)
     displayName: 'Terraform Plan'
     env:
       GOOGLE_CREDENTIALS: $(google_credentials)
