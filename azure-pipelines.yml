@@ -8,8 +8,7 @@ trigger:
 pool:
   vmImage: 'ubuntu-latest'
 
-# Steps for your build process. This is pretty straightforward, there is nothing to 'build' for terraform,
-# rather just gather your Terraform for the artifact
+# Steps for your build process
 steps:
 - task: DownloadSecureFile@1
   name: downloadSecureFile
@@ -49,10 +48,19 @@ steps:
   inputs:
     targetType: 'inline'
     script: |
+      gcloud auth revoke --all
+
+      # Activate the service account using the environment variable
+      gcloud auth activate-service-account --key-file="$GOOGLE_APPLICATION_CREDENTIALS"
+
+      # Set the project
       gcloud config set project deft-smile-424908-e6
-      gcloud auth activate-service-account --key-file=$(Agent.TempDirectory)/deft-smile-424908-e6-99b257295217.json
-      gcloud auth login --cred-file=$(Agent.TempDirectory)/deft-smile-424908-e6-99b257295217.json --force
-      cd $(Build.ArtifactStagingDirectory)/Terraform
+
+      # Verify the authentication
+      gcloud auth list
+
+      # Initialize Terraform with backend reconfiguration
       terraform init -reconfigure
-      terraform plan
+
+      # Apply Terraform configuration
       terraform apply -auto-approve
