@@ -56,3 +56,4 @@ jobs:
           ansible-playbook -i custom.ini dependencies.yml
           ansible-playbook -i custom.ini master.yml
           ansible-playbook -i custom.ini nodes.yml
+        working-directory: Ansible
