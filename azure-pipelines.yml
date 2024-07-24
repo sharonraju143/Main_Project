@@ -11,30 +11,30 @@ pool:
 # Steps for your build process. This is pretty straightforward, there is nothing to 'build' for terraform,
 # rather just gather your Terraform for the artifact
 steps:
-- task: CopyFiles@2
-  displayName: 'Copy Terraform files to artifacts'
-  inputs:
-    SourceFolder: 'Terraform'
-    TargetFolder: '$(build.artifactstagingdirectory)/Terraform'
-
-- task: PublishBuildArtifacts@1
-  displayName: 'Publish Artifact'
-  inputs:
-    PathtoPublish: '$(build.artifactstagingdirectory)'
-    ArtifactName: 'Terraform'
-    publishLocation: 'Container'
-
 - task: DownloadSecureFile@1
   name: downloadSecureFile
   inputs:
     secureFile: 'deft-smile-424908-e6-99b257295217.json'
 
 - task: CopyFiles@2
-  displayName: 'Copy Secure File to Container'
+  displayName: 'Copy Terraform files to artifacts'
+  inputs:
+    SourceFolder: 'Terraform'
+    TargetFolder: '$(Build.ArtifactStagingDirectory)/Terraform'
+
+- task: CopyFiles@2
+  displayName: 'Copy Secure File to Artifacts'
   inputs:
     SourceFolder: '$(Agent.TempDirectory)'  # Default location where secure files are downloaded
     Contents: 'deft-smile-424908-e6-99b257295217.json'
-    TargetFolder: '$(build.artifactstagingdirectory)/Terraform'  # Destination path for the container
+    TargetFolder: '$(Build.ArtifactStagingDirectory)'
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact'
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    ArtifactName: 'Terraform'
+    publishLocation: 'Container'
 
 - task: Bash@3
   displayName: 'List Files and Print Working Directory'
