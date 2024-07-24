@@ -50,6 +50,6 @@ steps:
     targetType: 'inline'
     script: |
       cd $(Build.ArtifactStagingDirectory)/Terraform
-      terraform init
+      terraform init -reconfigure
       terraform plan
       terraform apply -auto-approve
