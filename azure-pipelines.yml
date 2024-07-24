@@ -22,3 +22,6 @@ steps:
     PathtoPublish: '$(build.artifactstagingdirectory)'
     ArtifactName: 'Terraform'
     publishLocation: 'Container'
+- task: DownloadSecureFile@1
+  inputs:
+    secureFile: 'deft-smile-424908-e6-99b257295217.json'
