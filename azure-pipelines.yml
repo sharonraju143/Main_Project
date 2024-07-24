@@ -16,6 +16,7 @@ steps:
   inputs:
     SourceFolder: 'Terraform'
     TargetFolder: '$(build.artifactstagingdirectory)/Terraform'
+
 - task: PublishBuildArtifacts@1
   displayName: 'Publish Artifact'
   inputs:
@@ -25,3 +26,9 @@ steps:
 - task: DownloadSecureFile@1
   inputs:
     secureFile: 'deft-smile-424908-e6-99b257295217.json'
+- task: Bash@3
+  inputs:
+    targetType: 'inline'
+    script: |
+      ls -laRt
+      pwd
