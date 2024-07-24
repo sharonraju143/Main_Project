@@ -1,0 +1,33 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+- main
+
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+  - task: TerraformInstaller@2
+    inputs:
+      terraformVersion: 'latest'
+      
+  - task: TerraformCLI@0
+    displayName: 'Initializing Terraform'
+    env:
+      GOOGLE_CREDENTIALS: $(google_credentials)
+      BILLING_AC_ID: $(billing_ac_id)
+    inputs:
+      command: 'init'
+      
+  - task: PowerShell@2
+    displayName: 'Terraform Plan'
+    env:
+      GOOGLE_CREDENTIALS: $(google_credentials)
+      BILLING_AC_ID: $(billing_ac_id)
+    inputs:
+      targetType: 'inline'
+      script: |
+         terraform plan -var project_id=$env:project_id -var billing_ac_id=$env:billing_ac_id
