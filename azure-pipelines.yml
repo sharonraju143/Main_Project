@@ -34,7 +34,7 @@ steps:
   inputs:
     SourceFolder: '$(Agent.TempDirectory)'  # Default location where secure files are downloaded
     Contents: 'deft-smile-424908-e6-99b257295217.json'
-    TargetFolder: '$(build.artifactstagingdirectory)/Container'  # Destination path for the container
+    TargetFolder: '$(build.artifactstagingdirectory)/Terraform'  # Destination path for the container
 
 - task: Bash@3
   displayName: 'List Files and Print Working Directory'
