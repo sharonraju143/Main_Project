@@ -1,6 +1,7 @@
 provider "google" {
   project     = var.project_id
   region      = var.region
+  credentials = file("$(Build.ArtifactStagingDirectory)/Terraform/deft-smile-424908-e6-99b257295217.json")
   
 }
 
