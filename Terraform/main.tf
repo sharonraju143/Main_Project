@@ -1,9 +1,6 @@
 provider "google" {
   project = var.project_id
   region  = var.region
-
-  # Specify the provider version (optional but recommended)
-  version = "~> 3.5"  # Adjust based on the version you're using
 }
 
 terraform {
