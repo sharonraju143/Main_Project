@@ -8,7 +8,6 @@ terraform {
   backend "gcs" {
     bucket = "main_project_state_143"
     prefix = "terraform/state"
-    credentials = file("$(Build.SourcesDirectory)/gcp_credentials.json")
   }
 }
 
