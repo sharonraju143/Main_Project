@@ -50,8 +50,8 @@ steps:
     targetType: 'inline'
     script: |
       gcloud config set project deft-smile-424908-e6
-      gcloud auth activate-service-account --cred-file=$(Build.ArtifactStagingDirectory)/deft-smile-424908-e6-99b257295217.json
-      gcloud auth login --cred-file=$(Build.ArtifactStagingDirectory)/deft-smile-424908-e6-99b257295217.json
+      gcloud auth activate-service-account --key-file=$(Build.ArtifactStagingDirectory)/deft-smile-424908-e6-99b257295217.json
+      gcloud auth login --key-file=$(Build.ArtifactStagingDirectory)/deft-smile-424908-e6-99b257295217.json
       cd $(Build.ArtifactStagingDirectory)/Terraform
       terraform init -reconfigure
       terraform plan
