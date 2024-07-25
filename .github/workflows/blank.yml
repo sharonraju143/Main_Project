@@ -76,8 +76,8 @@ jobs:
           ansible-playbook -i Terraform/custom.ini nodes.yml
         working-directory: Ansible
 
-      # - name: Terraform Destroy
-      #   run: terraform destroy --auto-approve -var project_id=${{ secrets.PROJECT_ID }}
-      #   env:
-      #     GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
-      #   working-directory: Terraform
+      - name: Terraform Destroy
+        run: terraform destroy --auto-approve -var project_id=${{ secrets.PROJECT_ID }}
+        env:
+          GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
+        working-directory: Terraform
