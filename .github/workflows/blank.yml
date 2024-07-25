@@ -45,19 +45,17 @@ jobs:
           GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
         working-directory: Terraform
 
-      - name: List files in the Terraform directory after destroy
-        run: ls -la Terraform
-      - name: List files in the Terraform directory after destroy
-        run: pwd
-      - name: List files in the Terraform directory after destroy
-        run: cat Terraform/custom.ini
-        
+      - name: List files in the Terraform directory
+        run: |
+          pwd
+          ls -la Terraform
+          cat Terraform/custom.ini 
 
       - name: Run Ansible Playbooks
         run: |
-          ansible-playbook -i ../Terraform/custom.ini dependencies.yml
-          ansible-playbook -i ../Terraform/custom.ini master.yml
-          ansible-playbook -i ../Terraform/custom.ini nodes.yml
+          ansible-playbook -i Terraform/custom.ini dependencies.yml
+          ansible-playbook -i Terraform/custom.ini master.yml
+          ansible-playbook -i Terraform/custom.ini nodes.yml
         working-directory: Ansible
 
       - name: Terraform Destroy
