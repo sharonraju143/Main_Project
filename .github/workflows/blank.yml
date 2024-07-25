@@ -53,18 +53,21 @@ jobs:
 
       - name: Debug Terraform Outputs
         run: |
-          terraform output -raw master_ip
-          terraform output -raw node_1_ip
-          terraform output -raw node_2_ip
+          echo "master_ip=$(terraform output -raw master_ip)"
+          echo "node_1_ip=$(terraform output -raw node_1_ip)"
+          echo "node_2_ip=$(terraform output -raw node_2_ip)"
         working-directory: Terraform
         env:
           GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
 
       - name: Set environment variables
         run: |
-          echo "master_ip=$(terraform output -raw master_ip)" >> $GITHUB_ENV
-          echo "node_1_ip=$(terraform output -raw node_1_ip)" >> $GITHUB_ENV
-          echo "node_2_ip=$(terraform output -raw node_2_ip)" >> $GITHUB_ENV
+          master_ip=$(terraform output -raw master_ip)
+          node_1_ip=$(terraform output -raw node_1_ip)
+          node_2_ip=$(terraform output -raw node_2_ip)
+          echo "master_ip=${master_ip}" >> $GITHUB_ENV
+          echo "node_1_ip=${node_1_ip}" >> $GITHUB_ENV
+          echo "node_2_ip=${node_2_ip}" >> $GITHUB_ENV
         working-directory: Terraform
         env:
           GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
@@ -85,10 +88,10 @@ jobs:
 
       - name: Run Ansible Playbooks
         run: |
-          cd Ansible
-          ansible-playbook -i custom.ini dependencies.yml
-          ansible-playbook -i custom.ini master.yml
-          ansible-playbook -i custom.ini nodes.yml
+          ansible-playbook -i Ansible/custom.ini dependencies.yml
+          ansible-playbook -i Ansible/custom.ini master.yml
+          ansible-playbook -i Ansible/custom.ini nodes.yml
+        working-directory: Ansible
 
       - name: Terraform Destroy
         run: terraform destroy --auto-approve -var project_id=${{ secrets.PROJECT_ID }}
