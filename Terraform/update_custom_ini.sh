@@ -3,7 +3,7 @@
 set -x
 
 # Define absolute path for the Terraform directory
-TERRAFORM_DIR="/home/runner/work/Main_Project/Main_Project"
+TERRAFORM_DIR="/home/runner/work/Main_Project/Main_Project/Terraform"
 
 # Create or overwrite the custom.ini file with the master section
 echo "[master]" > "$TERRAFORM_DIR/custom.ini"
