@@ -45,17 +45,26 @@ jobs:
           GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
         working-directory: Terraform
 
-      - name: List files in the Terraform directory
+      - name: Fetch Terraform Outputs
+        id: outputs
         run: |
-          pwd
-          ls -la Terraform
-          cat /home/runner/work/Main_Project/Main_Project/Terraform/custom.ini 
+          echo "master_ip=$(terraform output -raw master_ip)" >> $GITHUB_ENV
+          echo "node_1_ip=$(terraform output -raw node_1_ip)" >> $GITHUB_ENV
+          echo "node_2_ip=$(terraform output -raw node_2_ip)" >> $GITHUB_ENV
+        working-directory: Terraform
+
+      - name: Run update_custom_ini.sh
+        run: |
+          cd Terraform
+          bash -x ../update_custom_ini.sh ${{ env.master_ip }} ${{ env.node_1_ip }} ${{ env.node_2_ip }}
+          ls -la
+          cat custom.ini || echo "custom.ini not found"
 
       - name: Run Ansible Playbooks
         run: |
-          ansible-playbook -i Terraform/custom.ini dependencies.yml
-          ansible-playbook -i Terraform/custom.ini master.yml
-          ansible-playbook -i Terraform/custom.ini nodes.yml
+          ansible-playbook -i ../Terraform/custom.ini dependencies.yml
+          ansible-playbook -i ../Terraform/custom.ini master.yml
+          ansible-playbook -i ../Terraform/custom.ini nodes.yml
         working-directory: Ansible
 
       - name: Terraform Destroy
