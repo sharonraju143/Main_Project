@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - main
- 
+
 jobs:
   terraform:
     runs-on: ubuntu-latest
@@ -44,7 +44,7 @@ jobs:
         env:
           GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
         working-directory: Terraform
-        
+
       - name: List files in the Terraform directory after destroy
         run: ls -la Terraform
 
@@ -55,7 +55,7 @@ jobs:
           ansible-playbook -i ../Terraform/custom.ini nodes.yml
         working-directory: Ansible
 
-       - name: Terraform Destroy
+      - name: Terraform Destroy
         run: terraform destroy --auto-approve -var project_id=${{ secrets.PROJECT_ID }}
         env:
           GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
