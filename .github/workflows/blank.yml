@@ -50,24 +50,6 @@ jobs:
         working-directory: Terraform
         env:
           GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
-          
-      - name: run command 
-        run: terraform output -raw master_ip > Ansible/custom.ini
-        working-directory: Terraform
-        env:
-          GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
-      - name: run command 
-        run: terraform output -raw node_1_ip > Ansible/custom.ini
-        working-directory: Terraform
-        env:
-          GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
-      - name: run command 
-        run: terraform output -raw node_2_ip > Ansible/custom.ini
-        working-directory: Terraform
-        env:
-          GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
-
-    
 
       - name: Ensure Ansible Directory Exists
         run: mkdir -p Ansible
@@ -75,10 +57,13 @@ jobs:
       - name: Create custom.ini file
         run: |
           echo "[master]" > Ansible/custom.ini
-          echo "ip=${{ env.master_ip }}" >> Ansible/custom.ini
+          terraform output -raw master_ip >> Ansible/custom.ini
           echo "[nodes]" >> Ansible/custom.ini
-          echo "node1_ip=${{ env.node_1_ip }}" >> Ansible/custom.ini
-          echo "node2_ip=${{ env.node_2_ip }}" >> Ansible/custom.ini
+          terraform output -raw node_1_ip >> Ansible/custom.ini
+          terraform output -raw node_2_ip >> Ansible/custom.ini
+        working-directory: Terraform
+        env:
+          GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
 
       - name: Display custom.ini contents
         run: cat Ansible/custom.ini
