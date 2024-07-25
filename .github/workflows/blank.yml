@@ -51,6 +51,12 @@ jobs:
         env:
           GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
 
+      - name: Display Terraform Outputs
+        run: |
+          echo "master_ip=$(terraform output -raw master_ip)"
+          echo "node_1_ip=$(terraform output -raw node_1_ip)"
+          echo "node_2_ip=$(terraform output -raw node_2_ip)"
+
       - name: Ensure Ansible Directory Exists
         run: mkdir -p Ansible
 
