@@ -50,19 +50,24 @@ jobs:
         working-directory: Terraform
         env:
           GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
+          
       - name: run command 
-        run: terraform output -raw master_ip
+        run: terraform output -raw master_ip > Ansible/custom.ini
+        working-directory: Terraform
+        env:
+          GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
+      - name: run command 
+        run: terraform output -raw node_1_ip > Ansible/custom.ini
+        working-directory: Terraform
+        env:
+          GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
+      - name: run command 
+        run: terraform output -raw node_2_ip > Ansible/custom.ini
         working-directory: Terraform
         env:
           GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
 
-      - name: Get Terraform Outputs
-        id: get_outputs
-        working-directory: Terraform
-        run: |
-          echo "master_ip=$(terraform output -raw master_ip)" >> ENV
-          echo "node_1_ip=$(terraform output -raw node_1_ip)" >> ENV
-          echo "node_2_ip=$(terraform output -raw node_2_ip)" >> ENV
+    
 
       - name: Ensure Ansible Directory Exists
         run: mkdir -p Ansible
