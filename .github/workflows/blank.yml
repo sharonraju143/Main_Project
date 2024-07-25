@@ -47,7 +47,8 @@ jobs:
 
       - name: List files in the Terraform directory after destroy
         run: ls -la Terraform
-      
+      - name: List files in the Terraform directory after destroy
+        run: pwd
       - name: List files in the Terraform directory after destroy
         run: cat Terraform/custom.ini
         
