@@ -62,6 +62,9 @@ jobs:
           echo "node1_ip=$(terraform output -raw node_1_ip)" >> Ansible/custom.ini
           echo "node2_ip=$(terraform output -raw node_2_ip)" >> Ansible/custom.ini
 
+      - name: Display custom.ini contents
+        run: cat Ansible/custom.ini
+
       - name: Setup SSH for Ansible
         run: |
           mkdir -p ~/.ssh
