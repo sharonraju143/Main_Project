@@ -61,15 +61,6 @@ jobs:
         env:
           GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
 
-      - name: Ensure Ansible Directory Exists
-        run: mkdir -p Ansible
-
-      - name: Setup SSH for Ansible
-        run: |
-          mkdir -p ~/.ssh
-          cp Terraform/private_key.pem ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-
       - name: Run Ansible Playbooks
         run: |
           ansible-playbook -i Terraform/custom.ini dependencies.yml
