@@ -51,6 +51,9 @@ jobs:
         env:
           GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
 
+      - name: Ensure Ansible Directory Exists
+        run: mkdir -p Ansible
+
       - name: Create custom.ini file
         run: |
           echo "[master]" > Ansible/custom.ini
@@ -58,7 +61,6 @@ jobs:
           echo "[nodes]" >> Ansible/custom.ini
           echo "node1_ip=$(terraform output -raw node_1_ip)" >> Ansible/custom.ini
           echo "node2_ip=$(terraform output -raw node_2_ip)" >> Ansible/custom.ini
-        working-directory: Terraform
 
       - name: Setup SSH for Ansible
         run: |
