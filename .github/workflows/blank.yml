@@ -19,6 +19,10 @@ jobs:
       - name: Write private key to file
         run: echo "${{ secrets.PRIVATE_KEY }}" > Terraform/private_key.pem
 
+      
+      - name: Set execute permissions for update_custom_ini.sh
+        run: chmod +x Terraform/update_custom_ini.sh
+
       - name: Set private key file permissions
         run: chmod 600 Terraform/private_key.pem
 
