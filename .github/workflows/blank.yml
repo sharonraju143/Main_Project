@@ -52,8 +52,8 @@ jobs:
           GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
         working-directory: Terraform
         
-      # - name: contents of custom.ini
-      #   run: cat Terraform/custom.ini
+      - name: contents of custom.ini
+        run: cat Terraform/custom.ini
 
       - name: Terraform Refresh
         run: terraform refresh
