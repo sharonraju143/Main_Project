@@ -57,19 +57,26 @@ jobs:
           echo "node_1_ip=$(terraform output -raw node_1_ip)" >> $GITHUB_ENV
           echo "node_2_ip=$(terraform output -raw node_2_ip)" >> $GITHUB_ENV
 
-      - name: Run update_custom_ini.sh
+      - name: Create custom.ini file
         run: |
-          cd Terraform
-          bash -x ../update_custom_ini.sh ${{ env.master_ip }} ${{ env.node_1_ip }} ${{ env.node_2_ip }}
-          ls -la
-          cat custom.ini || echo "custom.ini not found"
+          echo "[master]" > Ansible/custom.ini
+          echo "ip=${{ env.master_ip }}" >> Ansible/custom.ini
+          echo "[nodes]" >> Ansible/custom.ini
+          echo "node1_ip=${{ env.node_1_ip }}" >> Ansible/custom.ini
+          echo "node2_ip=${{ env.node_2_ip }}" >> Ansible/custom.ini
+
+      - name: Setup SSH for Ansible
+        run: |
+          mkdir -p ~/.ssh
+          cp Terraform/private_key.pem ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
 
       - name: Run Ansible Playbooks
         run: |
-          ansible-playbook -i Terraform/custom.ini dependencies.yml
-          ansible-playbook -i Terraform/custom.ini master.yml
-          ansible-playbook -i Terraform/custom.ini nodes.yml
-        working-directory: Ansible
+          cd Ansible
+          ansible-playbook -i custom.ini dependencies.yml
+          ansible-playbook -i custom.ini master.yml
+          ansible-playbook -i custom.ini nodes.yml
 
       - name: Terraform Destroy
         run: terraform destroy --auto-approve -var project_id=${{ secrets.PROJECT_ID }}
