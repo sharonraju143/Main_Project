@@ -55,9 +55,9 @@ jobs:
         id: get_outputs
         working-directory: Terraform
         run: |
-          echo "master_ip=$(terraform output -raw master_ip)" >> $GITHUB_ENV
-          echo "node_1_ip=$(terraform output -raw node_1_ip)" >> $GITHUB_ENV
-          echo "node_2_ip=$(terraform output -raw node_2_ip)" >> $GITHUB_ENV
+          echo "master_ip=$(terraform output -raw master_ip)" >> ENV
+          echo "node_1_ip=$(terraform output -raw node_1_ip)" >> ENV
+          echo "node_2_ip=$(terraform output -raw node_2_ip)" >> ENV
 
       - name: Ensure Ansible Directory Exists
         run: mkdir -p Ansible
