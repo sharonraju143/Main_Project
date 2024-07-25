@@ -33,7 +33,7 @@ jobs:
           GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
         working-directory: Terraform
 
-      - name: Terraform Plan
+      - name: Terraform Plan 
         run: terraform plan -var project_id=${{ secrets.PROJECT_ID }}
         env:
           GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
@@ -54,7 +54,7 @@ jobs:
       - name: Ensure Ansible Directory Exists
         run: mkdir -p Ansible
 
-      - name: Capture Terraform Outputs
+      - name: Capture Terraform 
         id: outputs
         run: |
           echo "master_ip=$(terraform output -raw master_ip)" >> $GITHUB_ENV
