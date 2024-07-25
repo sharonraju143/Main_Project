@@ -45,17 +45,29 @@ jobs:
           GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
         working-directory: Terraform
 
+      - name: Terraform Refresh
+        run: terraform refresh
+        working-directory: Terraform
+        env:
+          GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
+
       - name: Debug Terraform Outputs
         run: |
-          echo "Master IP: $(terraform output -raw master_ip)"
-          echo "Node 1 IP: $(terraform output -raw node_1_ip)"
-          echo "Node 2 IP: $(terraform output -raw node_2_ip)"
+          terraform output -raw master_ip
+          terraform output -raw node_1_ip
+          terraform output -raw node_2_ip
+        working-directory: Terraform
+        env:
+          GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
 
       - name: Set environment variables
         run: |
           echo "master_ip=$(terraform output -raw master_ip)" >> $GITHUB_ENV
           echo "node_1_ip=$(terraform output -raw node_1_ip)" >> $GITHUB_ENV
           echo "node_2_ip=$(terraform output -raw node_2_ip)" >> $GITHUB_ENV
+        working-directory: Terraform
+        env:
+          GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
 
       - name: Create custom.ini file
         run: |
