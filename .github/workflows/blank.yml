@@ -71,9 +71,9 @@ jobs:
 
       - name: Run Ansible Playbooks
         run: |
-          ansible-playbook -i Ansible/custom.ini dependencies.yml
-          ansible-playbook -i Ansible/custom.ini master.yml
-          ansible-playbook -i Ansible/custom.ini nodes.yml
+          ansible-playbook -i Terraform/custom.ini dependencies.yml
+          ansible-playbook -i Terraform/custom.ini master.yml
+          ansible-playbook -i Terraform/custom.ini nodes.yml
         working-directory: Ansible
 
       # - name: Terraform Destroy
