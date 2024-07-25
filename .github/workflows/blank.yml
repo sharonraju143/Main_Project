@@ -15,9 +15,12 @@ jobs:
 
       - name: Write public key to file
         run: echo "${{ secrets.PUBLIC_KEY }}" > Terraform/public_key.pub
-
+      
       - name: Write private key to file
         run: echo "${{ secrets.PRIVATE_KEY }}" > Terraform/private_key.pem
+
+      - name: Contents of private key
+        run: cat Terraform/private_key.pem
 
       
       - name: Set execute permissions for update_custom_ini.sh
@@ -73,8 +76,8 @@ jobs:
           ansible-playbook -i Ansible/custom.ini nodes.yml
         working-directory: Ansible
 
-      - name: Terraform Destroy
-        run: terraform destroy --auto-approve -var project_id=${{ secrets.PROJECT_ID }}
-        env:
-          GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
-        working-directory: Terraform
+      # - name: Terraform Destroy
+      #   run: terraform destroy --auto-approve -var project_id=${{ secrets.PROJECT_ID }}
+      #   env:
+      #     GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
+      #   working-directory: Terraform
