@@ -51,32 +51,14 @@ jobs:
         env:
           GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
 
-      - name: Debug Terraform Outputs
-        id: terraform_outputs
-        run: |
-          echo "master_ip=$(terraform output -raw master_ip)"
-          echo "node_1_ip=$(terraform output -raw node_1_ip)"
-          echo "node_2_ip=$(terraform output -raw node_2_ip)"
-        working-directory: Terraform
-        env:
-          GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
-
-      - name: Set environment variables
-        run: |
-          echo "master_ip=$(terraform output -raw master_ip)" >> $GITHUB_ENV
-          echo "node_1_ip=$(terraform output -raw node_1_ip)" >> $GITHUB_ENV
-          echo "node_2_ip=$(terraform output -raw node_2_ip)" >> $GITHUB_ENV
-        working-directory: Terraform
-        env:
-          GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
-
       - name: Create custom.ini file
         run: |
           echo "[master]" > Ansible/custom.ini
-          echo "ip=${{ env.master_ip }}" >> Ansible/custom.ini
+          echo "ip=$(terraform output -raw master_ip)" >> Ansible/custom.ini
           echo "[nodes]" >> Ansible/custom.ini
-          echo "node1_ip=${{ env.node_1_ip }}" >> Ansible/custom.ini
-          echo "node2_ip=${{ env.node_2_ip }}" >> Ansible/custom.ini
+          echo "node1_ip=$(terraform output -raw node_1_ip)" >> Ansible/custom.ini
+          echo "node2_ip=$(terraform output -raw node_2_ip)" >> Ansible/custom.ini
+        working-directory: Terraform
 
       - name: Setup SSH for Ansible
         run: |
