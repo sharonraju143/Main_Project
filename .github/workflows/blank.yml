@@ -41,7 +41,7 @@ jobs:
         working-directory: Terraform
 
       - name: Terraform Plan 
-        run: terraform plan -var project_id=${{ secrets.PROJECT_ID }}
+        run: terraform plan -var project_id=${{ secrets.PROJECT_ID }} -lock=false
         env:
           GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
         working-directory: Terraform
