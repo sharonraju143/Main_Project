@@ -51,22 +51,19 @@ jobs:
         env:
           GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
 
-      - name: Ensure Ansible Directory Exists
-        run: mkdir -p Ansible
-
       - name: Create custom.ini file
         run: |
-          echo "[master]" > Ansible/custom.ini
-          terraform output -raw master_ip >> Ansible/custom.ini
-          echo "[nodes]" >> Ansible/custom.ini
-          terraform output -raw node_1_ip >> Ansible/custom.ini
-          terraform output -raw node_2_ip >> Ansible/custom.ini
+          echo "[master]" > custom.ini
+          terraform output -raw master_ip >> custom.ini
+          echo "[nodes]" >> custom.ini
+          terraform output -raw node_1_ip >> custom.ini
+          terraform output -raw node_2_ip >> custom.ini
         working-directory: Terraform
         env:
           GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
 
       - name: Display custom.ini contents
-        run: cat Ansible/custom.ini
+        run: cat custom.ini
 
       - name: Setup SSH for Ansible
         run: |
@@ -76,9 +73,9 @@ jobs:
 
       - name: Run Ansible Playbooks
         run: |
-          ansible-playbook -i Ansible/custom.ini dependencies.yml
-          ansible-playbook -i Ansible/custom.ini master.yml
-          ansible-playbook -i Ansible/custom.ini nodes.yml
+          ansible-playbook -i custom.ini dependencies.yml
+          ansible-playbook -i custom.ini master.yml
+          ansible-playbook -i custom.ini nodes.yml
         working-directory: Ansible
 
       - name: Terraform Destroy
