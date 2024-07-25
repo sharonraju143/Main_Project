@@ -49,7 +49,7 @@ jobs:
         run: |
           pwd
           ls -la Terraform
-          cat Terraform/custom.ini 
+          cat /home/runner/work/Main_Project/Main_Project/Terraform/custom.ini 
 
       - name: Run Ansible Playbooks
         run: |
