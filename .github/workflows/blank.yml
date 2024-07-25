@@ -52,6 +52,7 @@ jobs:
           GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
 
       - name: Debug Terraform Outputs
+        id: terraform_outputs
         run: |
           echo "master_ip=$(terraform output -raw master_ip)"
           echo "node_1_ip=$(terraform output -raw node_1_ip)"
@@ -62,12 +63,9 @@ jobs:
 
       - name: Set environment variables
         run: |
-          master_ip=$(terraform output -raw master_ip)
-          node_1_ip=$(terraform output -raw node_1_ip)
-          node_2_ip=$(terraform output -raw node_2_ip)
-          echo "master_ip=${master_ip}" >> $GITHUB_ENV
-          echo "node_1_ip=${node_1_ip}" >> $GITHUB_ENV
-          echo "node_2_ip=${node_2_ip}" >> $GITHUB_ENV
+          echo "master_ip=$(terraform output -raw master_ip)" >> $GITHUB_ENV
+          echo "node_1_ip=$(terraform output -raw node_1_ip)" >> $GITHUB_ENV
+          echo "node_2_ip=$(terraform output -raw node_2_ip)" >> $GITHUB_ENV
         working-directory: Terraform
         env:
           GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
