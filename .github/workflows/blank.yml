@@ -64,6 +64,7 @@ jobs:
 
       - name: Display custom.ini contents
         run: cat custom.ini
+        working-directory: Terraform
 
       - name: Setup SSH for Ansible
         run: |
