@@ -45,13 +45,17 @@ jobs:
           GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
         working-directory: Terraform
 
-      - name: Fetch Terraform Outputs
-        id: outputs
+      - name: Debug Terraform Outputs
+        run: |
+          echo "Master IP: $(terraform output -raw master_ip)"
+          echo "Node 1 IP: $(terraform output -raw node_1_ip)"
+          echo "Node 2 IP: $(terraform output -raw node_2_ip)"
+
+      - name: Set environment variables
         run: |
           echo "master_ip=$(terraform output -raw master_ip)" >> $GITHUB_ENV
           echo "node_1_ip=$(terraform output -raw node_1_ip)" >> $GITHUB_ENV
           echo "node_2_ip=$(terraform output -raw node_2_ip)" >> $GITHUB_ENV
-        working-directory: Terraform
 
       - name: Run update_custom_ini.sh
         run: |
