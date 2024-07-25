@@ -51,26 +51,17 @@ jobs:
         env:
           GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
 
-      - name: Get Terraform Outputs
-        id: get_outputs
+      - name: Get Terraform Outputs and Create custom.ini
         run: |
           master_ip=$(terraform output -raw master_ip)
           node_1_ip=$(terraform output -raw node_1_ip)
           node_2_ip=$(terraform output -raw node_2_ip)
-          echo "master_ip=$master_ip" >> $GITHUB_ENV
-          echo "node_1_ip=$node_1_ip" >> $GITHUB_ENV
-          echo "node_2_ip=$node_2_ip" >> $GITHUB_ENV
-
-      - name: Ensure Ansible Directory Exists
-        run: mkdir -p Ansible
-
-      - name: Create custom.ini file
-        run: |
+          
           echo "[master]" > Ansible/custom.ini
-          echo "ip=${{ env.master_ip }}" >> Ansible/custom.ini
+          echo "ip=$master_ip" >> Ansible/custom.ini
           echo "[nodes]" >> Ansible/custom.ini
-          echo "node1_ip=${{ env.node_1_ip }}" >> Ansible/custom.ini
-          echo "node2_ip=${{ env.node_2_ip }}" >> Ansible/custom.ini
+          echo "node1_ip=$node_1_ip" >> Ansible/custom.ini
+          echo "node2_ip=$node_2_ip" >> Ansible/custom.ini
 
       - name: Display custom.ini contents
         run: cat Ansible/custom.ini
